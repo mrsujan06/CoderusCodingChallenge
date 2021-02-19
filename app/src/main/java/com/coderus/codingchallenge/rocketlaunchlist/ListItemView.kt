@@ -5,10 +5,11 @@ import android.graphics.Color
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.coderus.codingchallenge.R
-import com.coderus.codingchallenge.model.RocketLaunch
+import com.coderus.codingchallenge.domain.RocketLaunch
+import com.coderus.codingchallenge.network.dto.RocketLaunchNetwork
 
 /**
- * Custom view to show a [RocketLaunch] in the list in the list fragment.
+ * Custom view to show a [RocketLaunchNetwork] in the list in the list fragment.
  */
 class ListItemView(context: Context) : CardView(context) {
 

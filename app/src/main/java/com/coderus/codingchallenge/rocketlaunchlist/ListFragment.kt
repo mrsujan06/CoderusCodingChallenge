@@ -11,20 +11,24 @@ import androidx.navigation.fragment.findNavController
 import com.coderus.codingchallenge.R
 import com.coderus.codingchallenge.ViewModelFactory
 import com.coderus.codingchallenge.databinding.FragmentListBinding
+import com.coderus.codingchallenge.domain.RocketLaunch
 import com.coderus.codingchallenge.listener.ItemClickListener
-import com.coderus.codingchallenge.model.RocketLaunch
-import com.coderus.codingchallenge.repository.RocketLaunchesRepository
+import com.coderus.codingchallenge.repository.RocketLaunchRepository
+import com.coderus.codingchallenge.utils.ConnectionChecker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
- * Fragment to display the list of Rocket Launches.
+ * Fragment to display the list of RocketLaunchNetwork Launches.
  */
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list) {
 
     @Inject
-    lateinit var repository: RocketLaunchesRepository
+    lateinit var launchRepository: RocketLaunchRepository
+
+    @Inject
+    lateinit var connectionChecker: ConnectionChecker
 
     private lateinit var viewModel: ListViewModel
     private lateinit var adapter: RocketLaunchListAdapter
@@ -40,7 +44,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             bundle.putInt("flightNumber", rocketLaunch.flightNumber)
             bundle.putString("details", rocketLaunch.details)
             bundle.putString("dateUtc", rocketLaunch.dateUTC)
-            rocketLaunch.success?.let { bundle.putBoolean("launchSuccess" , it) }
+            rocketLaunch.upcoming?.let { bundle.putBoolean("upcoming", it) }
+            rocketLaunch.success?.let { bundle.putBoolean("launchSuccess", it) }
             findNavController().navigate(R.id.action_listFragment_to_detailFragment, bundle)
         }
     }
@@ -69,27 +74,22 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
-            this, ViewModelFactory(repository)
+            this, ViewModelFactory(launchRepository, connectionChecker)
         ).get(ListViewModel::class.java)
 
-        viewModel.retrieveData()
+        viewModel.refreshDataFromRepository()
 
-        viewModel.rocketLunches.observe(viewLifecycleOwner) {
+        viewModel.rocketLaunches.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
         viewModel.loadingState.observe(viewLifecycleOwner) {
             when (it) {
                 ListViewModel.LoadingState.LOADING -> displayProgressbar()
                 ListViewModel.LoadingState.DONE -> displayRocketLunchesList()
-                else -> displayConnectionError()
+                ListViewModel.LoadingState.ERROR -> displayConnectionError()
             }
         }
 
-    }
-
-    private fun displayRocketLunchesList() {
-        binding.rocketLaunchList.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
     }
 
     private fun displayProgressbar() {
@@ -97,7 +97,14 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         binding.rocketLaunchList.visibility = View.GONE
     }
 
+    private fun displayRocketLunchesList() {
+        binding.progressBar.visibility = View.GONE
+        binding.rocketLaunchList.visibility = View.VISIBLE
+    }
+
+
     private fun displayConnectionError() {
+        binding.progressBar.visibility = View.GONE
         Toast.makeText(context, R.string.network_error_message, Toast.LENGTH_SHORT).show()
     }
 

@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.Person.fromBundle
 import androidx.fragment.app.Fragment
 import com.coderus.codingchallenge.R
 import com.coderus.codingchallenge.databinding.FragmentDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Fragment to display the list of Rocket Launches.
+ * Fragment to display the list of RocketLaunchNetwork Launches.
  */
 @AndroidEntryPoint
 class DetailFragment : Fragment(R.layout.fragment_detail) {
@@ -36,11 +35,23 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         val details = arguments?.getString("details")
         val dateUtc = arguments?.getString("dateUtc")
         val rocketLaunch = arguments?.getBoolean("launchSuccess")
+        val upcoming = arguments?.getBoolean("upcoming")
 
         binding.flightNumber.text = flightNumber.toString()
         binding.details.text = details
         binding.launchDateUTC.text = dateUtc
-        binding.launchSuccess.text = rocketLaunch.toString()
+
+        when {
+            rocketLaunch == true -> {
+                binding.launchSuccess.text = context?.getString(R.string.successful)
+            }
+            upcoming == true -> {
+                binding.launchSuccess.text = context?.getString(R.string.upcoming)
+            }
+            else -> {
+                binding.launchSuccess.text = context?.getString(R.string.unsuccessful)
+            }
+        }
 
     }
 

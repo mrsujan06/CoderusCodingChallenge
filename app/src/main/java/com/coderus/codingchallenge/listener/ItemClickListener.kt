@@ -1,6 +1,6 @@
 package com.coderus.codingchallenge.listener
 
-import com.coderus.codingchallenge.model.RocketLaunch
+import com.coderus.codingchallenge.domain.RocketLaunch
 
 interface ItemClickListener {
     fun onRocketClick(rocketLaunch: RocketLaunch)
