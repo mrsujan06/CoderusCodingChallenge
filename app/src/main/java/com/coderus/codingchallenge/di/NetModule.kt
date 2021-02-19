@@ -26,7 +26,6 @@ open class NetModule {
         Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
             .client(okHttpClient)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 

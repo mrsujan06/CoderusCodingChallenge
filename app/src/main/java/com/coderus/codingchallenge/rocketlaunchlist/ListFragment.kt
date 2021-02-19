@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.coderus.codingchallenge.R
 import com.coderus.codingchallenge.ViewModelFactory
 import com.coderus.codingchallenge.databinding.FragmentListBinding
+import com.coderus.codingchallenge.listener.ItemClickListener
+import com.coderus.codingchallenge.model.RocketLaunch
 import com.coderus.codingchallenge.repository.RocketLaunchesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,6 +33,18 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     private val binding: FragmentListBinding
         get() = _binding!!
 
+    private val itemClickListener: ItemClickListener = object : ItemClickListener {
+        override fun onRocketClick(rocketLaunch: RocketLaunch) {
+            Toast.makeText(requireContext(), rocketLaunch.name, Toast.LENGTH_SHORT).show()
+            val bundle = Bundle()
+            bundle.putInt("flightNumber", rocketLaunch.flightNumber)
+            bundle.putString("details", rocketLaunch.details)
+            bundle.putString("dateUtc", rocketLaunch.dateUTC)
+            rocketLaunch.success?.let { bundle.putBoolean("launchSuccess" , it) }
+            findNavController().navigate(R.id.action_listFragment_to_detailFragment, bundle)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,20 +57,14 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
-        setupRecyclerview()
         setupViewModel()
     }
 
     private fun setupList() {
-        RocketLaunchListAdapter(requireContext()).apply {
+        adapter = RocketLaunchListAdapter(requireContext(), itemClickListener).apply {
             binding.rocketLaunchList.adapter = this
             binding.rocketLaunchList.addItemDecoration(ListItemDecoration(20))
         }
-    }
-
-    private fun setupRecyclerview() {
-        adapter = RocketLaunchListAdapter(this.requireContext())
-        binding.rocketLaunchList.adapter = adapter
     }
 
     private fun setupViewModel() {
@@ -96,4 +105,5 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         super.onDestroyView()
         _binding = null
     }
+
 }

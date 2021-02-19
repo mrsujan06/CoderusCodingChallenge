@@ -4,12 +4,16 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.coderus.codingchallenge.listener.ItemClickListener
 import com.coderus.codingchallenge.model.RocketLaunch
 
 /**
  * ListAdapter class for the Recycler view that displays a list of [RocketLaunch] objects.
  */
-class RocketLaunchListAdapter internal constructor(private val context: Context) :
+class RocketLaunchListAdapter internal constructor(
+    private val context: Context,
+    private val itemClickListener: ItemClickListener
+) :
     ListAdapter<RocketLaunch, RocketLaunchListAdapter.ListItemViewHolder>(
         RocketLaunchListDiffCallback()
     ) {
@@ -24,5 +28,10 @@ class RocketLaunchListAdapter internal constructor(private val context: Context)
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
         val item = getItem(position)
         holder.listItemView.setItem(item)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onRocketClick(item)
+        }
     }
+
+
 }
