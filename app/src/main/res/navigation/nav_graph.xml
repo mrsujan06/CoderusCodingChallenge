@@ -16,5 +16,10 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.coderus.codingchallenge.rocketlaunchdetail.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment" >
+        <argument
+            android:name="rocket_launcher"
+            app:argType="com.coderus.codingchallenge.domain.RocketLaunch"
+            app:nullable="true" />
+    </fragment>
 </navigation>

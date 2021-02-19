@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.coderus.codingchallenge.database.RocketEntities.Companion.ROCKET_TABLE
 import com.coderus.codingchallenge.domain.RocketLaunch
-import com.squareup.moshi.Json
 
 @Entity(tableName = ROCKET_TABLE)
 data class RocketEntities constructor(

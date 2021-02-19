@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -39,15 +40,19 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val itemClickListener: ItemClickListener = object : ItemClickListener {
         override fun onRocketClick(rocketLaunch: RocketLaunch) {
-            Toast.makeText(requireContext(), rocketLaunch.name, Toast.LENGTH_SHORT).show()
-            val bundle = Bundle()
-            bundle.putInt("flightNumber", rocketLaunch.flightNumber)
-            bundle.putString("details", rocketLaunch.details)
-            bundle.putString("dateUtc", rocketLaunch.dateUTC)
-            rocketLaunch.upcoming?.let { bundle.putBoolean("upcoming", it) }
-            rocketLaunch.success?.let { bundle.putBoolean("launchSuccess", it) }
-            findNavController().navigate(R.id.action_listFragment_to_detailFragment, bundle)
-        }
+
+            val action = ListFragmentDirections.actionListFragmentToDetailFragment(rocketLaunch)
+
+//            Toast.makeText(requireContext(), rocketLaunch.name, Toast.LENGTH_SHORT).show()
+//            val bundle = Bundle()
+//            bundle.putInt("flightNumber", rocketLaunch.flightNumber)
+//            bundle.putString("details", rocketLaunch.details)
+//            bundle.putString("dateUtc", rocketLaunch.dateUTC)
+//            rocketLaunch.upcoming?.let { bundle.putBoolean("upcoming", it) }
+//            rocketLaunch.success?.let { bundle.putBoolean("launchSuccess", it) }
+
+            findNavController().navigate(action)
+      }
     }
 
     override fun onCreateView(

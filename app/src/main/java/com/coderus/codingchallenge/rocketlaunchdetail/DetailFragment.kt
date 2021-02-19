@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.coderus.codingchallenge.R
 import com.coderus.codingchallenge.databinding.FragmentDetailBinding
+import com.coderus.codingchallenge.domain.RocketLaunch
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -31,21 +32,18 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val flightNumber = arguments?.getInt("flightNumber")
-        val details = arguments?.getString("details")
-        val dateUtc = arguments?.getString("dateUtc")
-        val rocketLaunch = arguments?.getBoolean("launchSuccess")
-        val upcoming = arguments?.getBoolean("upcoming")
+        val args = DetailFragmentArgs.fromBundle(requireArguments())
+        val rocketLauncher: RocketLaunch? = args.rocketLauncher
 
-        binding.flightNumber.text = flightNumber.toString()
-        binding.details.text = details
-        binding.launchDateUTC.text = dateUtc
+        binding.flightNumber.text = rocketLauncher?.flightNumber.toString()
+        binding.details.text = rocketLauncher?.details
+        binding.launchDateUTC.text = rocketLauncher?.dateUTC
 
         when {
-            rocketLaunch == true -> {
+            rocketLauncher?.success == true -> {
                 binding.launchSuccess.text = context?.getString(R.string.successful)
             }
-            upcoming == true -> {
+            rocketLauncher?.upcoming == true -> {
                 binding.launchSuccess.text = context?.getString(R.string.upcoming)
             }
             else -> {
