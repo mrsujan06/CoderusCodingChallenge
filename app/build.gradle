@@ -17,6 +17,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testOptions {
+            unitTests.returnDefaultValues = true
+        }
     }
 
     buildTypes {
@@ -44,7 +48,7 @@ dependencies {
     def timber_version = "4.7.1"
     def retrofitVersion = "2.9.0"
     def moshi_version = "1.11.0"
-    def hiltVersion = "2.28-alpha"
+    def hiltVersion = "2.32-alpha"
     def okhttp_version = "4.9.0"
     def room_version = "2.2.5"
 
@@ -83,5 +87,16 @@ dependencies {
     //room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    testImplementation "org.mockito:mockito-core:3.3.3"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+    // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.28-alpha'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.28-alpha'
+
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+
 
 }

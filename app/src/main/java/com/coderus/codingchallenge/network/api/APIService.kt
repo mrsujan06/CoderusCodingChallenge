@@ -1,6 +1,6 @@
-package com.coderus.codingchallenge.api
+package com.coderus.codingchallenge.network.api
 
-import com.coderus.codingchallenge.network.dto.RocketLaunchNetwork
+import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 import com.coderus.codingchallenge.utils.Constant.Companion.LAUNCHES
 import retrofit2.http.GET
 
@@ -13,6 +13,5 @@ interface APIService {
      * Retrieve list of rocket launches from the SpaceX API.
      */
     @GET(LAUNCHES)
-    suspend fun getRocketLaunchList(): List<RocketLaunchNetwork>
-
+    suspend fun getRocketLaunchList(): List<RocketLaunchJson>
 }

@@ -11,6 +11,7 @@ data class RocketLaunch(
     val success: Boolean?,
     val upcoming: Boolean?
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
@@ -18,8 +19,7 @@ data class RocketLaunch(
         parcel.readString(),
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(flightNumber)

@@ -1,13 +1,13 @@
 package com.coderus.codingchallenge.di
 
-import com.coderus.codingchallenge.api.APIService
+import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.utils.Constant
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,8 +15,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 open class NetModule {
 
     @Singleton
@@ -55,9 +55,5 @@ open class NetModule {
     @Singleton
     open fun provideAPIService(retrofit: Retrofit): APIService =
         retrofit.create(APIService::class.java)
-
-//    @Provides
-//    @Singleton
-//    open fun provideNetworkChecker(context: Context): NetworkChecker = NetworkChecker(context)
 
 }

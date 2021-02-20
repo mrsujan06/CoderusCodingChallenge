@@ -2,10 +2,10 @@ package com.coderus.codingchallenge.rocketlaunchlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.coderus.codingchallenge.domain.RocketLaunch
-import com.coderus.codingchallenge.network.dto.RocketLaunchNetwork
+import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 
 /**
- * [DiffUtil.ItemCallback] for the [RocketLaunchNetwork] list.
+ * [DiffUtil.ItemCallback] for the [RocketLaunchJson] list.
  */
 class RocketLaunchListDiffCallback : DiffUtil.ItemCallback<RocketLaunch>() {
 

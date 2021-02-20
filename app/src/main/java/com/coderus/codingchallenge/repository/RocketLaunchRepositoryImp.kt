@@ -2,14 +2,14 @@ package com.coderus.codingchallenge.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.coderus.codingchallenge.api.APIService
+import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.database.RocketDatabase
 import com.coderus.codingchallenge.database.asDomainModel
 import com.coderus.codingchallenge.domain.RocketLaunch
-import com.coderus.codingchallenge.network.dto.asDatabaseModel
+import com.coderus.codingchallenge.network.domain.RocketLaunchJson
+import com.coderus.codingchallenge.network.domain.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 /**
  * Repository implementation for fetching Rocket Launches
@@ -23,21 +23,24 @@ class RocketLaunchRepositoryImp(
     /**
      * Gets the data from database and map it to domain model
      * */
-    override fun fetchRocketLaunches(): LiveData<List<RocketLaunch>> {
-        return Transformations.map(database.rocketDao.getRocketLauncher()) {
+    override fun fetchRocketLaunchList(): LiveData<List<RocketLaunch>> =
+        Transformations.map(database.rocketDao.getRocketLauncher()) {
             it.asDomainModel()
         }
-    }
 
     /**
-     * Fetch data from API and insert it to the Room database
+     * Fetch data from API
      * **/
-    override suspend fun refreshRocketLaunches() {
+    override suspend fun fetchRocketLaunchesFromNetwork(): List<RocketLaunchJson> =
+        apiService.getRocketLaunchList()
+
+    /**
+     * Insert Network result to the Room database
+     * **/
+    override suspend fun refreshRocketLaunchDb() {
         withContext(Dispatchers.IO) {
-            Timber.d("Fetch Rocket Launches called")
-            val rocketLaunchNetwork = apiService.getRocketLaunchList()
+            val rocketLaunchNetwork = fetchRocketLaunchesFromNetwork()
             database.rocketDao.insertRocketList(rocketLaunchNetwork.asDatabaseModel())
         }
     }
-
 }

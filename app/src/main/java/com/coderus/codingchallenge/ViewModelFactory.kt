@@ -11,14 +11,14 @@ import javax.inject.Inject
  * ViewModelFactory to construct the view models required.
  */
 class ViewModelFactory @Inject constructor(
-    private val launchRepository: RocketLaunchRepository,
+    private val rocketLaunchRepository: RocketLaunchRepository,
     private val connectionChecker: ConnectionChecker
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ListViewModel(launchRepository,connectionChecker) as T
+            return ListViewModel(rocketLaunchRepository, connectionChecker) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

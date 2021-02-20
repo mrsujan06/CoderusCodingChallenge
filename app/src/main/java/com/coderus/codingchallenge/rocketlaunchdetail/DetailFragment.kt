@@ -11,7 +11,7 @@ import com.coderus.codingchallenge.domain.RocketLaunch
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Fragment to display the list of RocketLaunchNetwork Launches.
+ * Fragment to display the list of RocketLaunchJson Launches.
  */
 @AndroidEntryPoint
 class DetailFragment : Fragment(R.layout.fragment_detail) {

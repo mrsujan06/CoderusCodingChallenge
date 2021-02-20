@@ -1,9 +1,8 @@
 package com.coderus.codingchallenge.rocketlaunchlist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
+import com.coderus.codingchallenge.App
 import com.coderus.codingchallenge.repository.RocketLaunchRepository
 import com.coderus.codingchallenge.utils.ConnectionChecker
 import kotlinx.coroutines.launch
@@ -14,42 +13,41 @@ import javax.inject.Inject
 /**
  * ViewModel class to expose data to the ListFragment that it is required to display.
  */
-class ListViewModel @Inject constructor(
-    private val repository: RocketLaunchRepository,
-    private val connectionChecker: ConnectionChecker
-) :
-    ViewModel() {
+class ListViewModel @Inject constructor(private val repository: RocketLaunchRepository, private val connectionChecker: ConnectionChecker
+) : ViewModel() {
 
     // list of RocketLaunch domain data
-    val rocketLaunches = repository.fetchRocketLaunches()
+    val rocketLaunch = repository.fetchRocketLaunchList()
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
 
+    init {
+        fetchRocketLaunchFrom ()
+    }
+
     /**
      *  Refresh data in the Repository
      * */
-    fun refreshDataFromRepository() {
+    private fun fetchRocketLaunchFrom () {
         viewModelScope.launch {
+            _loadingState.value = LoadingState.LOADING
             try {
-                if (!connectionChecker.isOnline()) {
-                    _loadingState.value = LoadingState.ERROR
-                } else {
-                    _loadingState.value = LoadingState.LOADING
-                    repository.refreshRocketLaunches().also {
+                if (connectionChecker.isOnline()) {
+                    repository.refreshRocketLaunchDb().also {
                         _loadingState.value = LoadingState.DONE
                     }
-                }
-
-            } catch (networkError: IOException) {
-                if (rocketLaunches.value.isNullOrEmpty()) {
+                } else {
                     _loadingState.value = LoadingState.ERROR
                 }
+            } catch (networkError: IOException) {
                 Timber.e(networkError.localizedMessage)
+                if (rocketLaunch.value.isNullOrEmpty()) {
+                    _loadingState.value = LoadingState.ERROR
+                }
             }
         }
-
     }
 
     /**
@@ -60,5 +58,4 @@ class ListViewModel @Inject constructor(
         DONE,
         ERROR
     }
-
 }

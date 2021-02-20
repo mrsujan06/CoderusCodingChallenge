@@ -7,11 +7,11 @@ import com.coderus.codingchallenge.database.RocketDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 open class DatabaseModule {
 
     @Provides
@@ -27,5 +27,4 @@ open class DatabaseModule {
     @Singleton
     open fun provideRocketDao(rocketDatabase: RocketDatabase): RocketDao =
         rocketDatabase.rocketDao
-
 }

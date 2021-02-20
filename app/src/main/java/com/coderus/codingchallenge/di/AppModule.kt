@@ -6,11 +6,12 @@ import com.coderus.codingchallenge.utils.ConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+
 @Module
+@InstallIn(SingletonComponent::class)
 open class AppModule {
 
     @Provides
@@ -22,5 +23,4 @@ open class AppModule {
     fun provideConnectionChecker(context: Context): ConnectionChecker {
         return ConnectionChecker(context)
     }
-
 }
