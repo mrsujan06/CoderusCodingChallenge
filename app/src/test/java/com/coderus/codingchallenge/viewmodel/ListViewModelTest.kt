@@ -4,11 +4,11 @@ import android.net.ConnectivityManager
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.coderus.codingchallenge.App
 import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 import com.coderus.codingchallenge.repository.RocketLaunchRepository
 import com.coderus.codingchallenge.rocketlaunchlist.ListViewModel
+import com.coderus.codingchallenge.utils.ConnectionChecker
 import com.coderus.codingchallenge.utils.TestCoroutineRule
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -41,7 +42,9 @@ class ListViewModelTest {
     @Mock
     private lateinit var connectivityManager: ConnectivityManager
 
-    private lateinit var app: App
+    @Mock
+    @Inject
+    private lateinit var connectionChecker: ConnectionChecker
 
     private lateinit var viewModel: ListViewModel
 
@@ -61,17 +64,14 @@ class ListViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-         app = App()
-        viewModel = ListViewModel(app, repository)
+        viewModel = ListViewModel(repository, connectionChecker)
     }
 
     @Test
     fun testSomeThing() {
         testCoroutineRule.runBlockingTest {
             val api = mock<APIService> {
-
-                if(app.hasInternetConnection())
-                onBlocking { getRocketLaunchList() } doReturn rocketLaunchList
+                    onBlocking { getRocketLaunchList() } doReturn rocketLaunchList
             }
 
             verify(api).getRocketLaunchList()

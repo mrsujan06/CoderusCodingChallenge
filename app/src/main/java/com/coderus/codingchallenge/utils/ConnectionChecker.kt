@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
-class ConnectionChecker(var context: Context) {
+open class ConnectionChecker(var context: Context) {
 
     fun isOnline(): Boolean {
         val connectivityManager =

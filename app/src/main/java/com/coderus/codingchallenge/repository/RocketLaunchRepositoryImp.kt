@@ -1,14 +1,12 @@
 package com.coderus.codingchallenge.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.database.RocketDatabase
-import com.coderus.codingchallenge.database.asDomainModel
-import com.coderus.codingchallenge.domain.RocketLaunch
+import com.coderus.codingchallenge.database.RocketEntities
+import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 import com.coderus.codingchallenge.network.domain.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 /**
@@ -21,12 +19,11 @@ class RocketLaunchRepositoryImp(
 ) : RocketLaunchRepository {
 
     /**
-     * Gets the data from database and map it to domain model
+     * Gets the data from database
      * */
-    override fun fetchRocketLaunchList(): LiveData<List<RocketLaunch>> =
-        Transformations.map(database.rocketDao.getRocketLauncher()) {
-            it.asDomainModel()
-        }
+    override fun fetchRocketLaunchList(): Flow<List<RocketEntities>> {
+        return database.rocketDao.getRocketLauncher()
+    }
 
     /**
      * Fetch data from API
@@ -43,4 +40,5 @@ class RocketLaunchRepositoryImp(
             database.rocketDao.insertRocketList(rocketLaunchNetwork.asDatabaseModel())
         }
     }
+
 }

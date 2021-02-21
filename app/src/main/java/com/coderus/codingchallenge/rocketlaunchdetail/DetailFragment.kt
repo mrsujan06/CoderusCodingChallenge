@@ -35,22 +35,23 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         val args = DetailFragmentArgs.fromBundle(requireArguments())
         val rocketLauncher: RocketLaunch? = args.rocketLauncher
 
-        binding.flightNumber.text = rocketLauncher?.flightNumber.toString()
-        binding.details.text = rocketLauncher?.details
-        binding.launchDateUTC.text = rocketLauncher?.dateUTC
+        binding.missionName.text = rocketLauncher?.name
+        binding.flightNumberValue.text = rocketLauncher?.flightNumber.toString()
+        binding.detailsValue.text =
+            rocketLauncher?.details ?: context?.getString(R.string.detail_not_available)
+        binding.launchDateUTCValue.text = rocketLauncher?.dateUTC
 
         when {
             rocketLauncher?.success == true -> {
-                binding.launchSuccess.text = context?.getString(R.string.successful)
+                binding.launchSuccessValue.text = context?.getString(R.string.successful)
             }
             rocketLauncher?.upcoming == true -> {
-                binding.launchSuccess.text = context?.getString(R.string.upcoming)
+                binding.launchSuccessValue.text = context?.getString(R.string.upcoming)
             }
             else -> {
-                binding.launchSuccess.text = context?.getString(R.string.unsuccessful)
+                binding.launchSuccessValue.text = context?.getString(R.string.unsuccessful)
             }
         }
-
     }
 
     override fun onDestroyView() {

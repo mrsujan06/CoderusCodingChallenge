@@ -1,8 +1,6 @@
 package com.coderus.codingchallenge.rocketlaunchlist
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.coderus.codingchallenge.App
 import com.coderus.codingchallenge.repository.RocketLaunchRepository
 import com.coderus.codingchallenge.utils.ConnectionChecker
 import kotlinx.coroutines.launch
@@ -13,24 +11,26 @@ import javax.inject.Inject
 /**
  * ViewModel class to expose data to the ListFragment that it is required to display.
  */
-class ListViewModel @Inject constructor(private val repository: RocketLaunchRepository, private val connectionChecker: ConnectionChecker
+class ListViewModel @Inject constructor(
+    private val repository: RocketLaunchRepository,
+    private val connectionChecker: ConnectionChecker
 ) : ViewModel() {
 
-    // list of RocketLaunch domain data
-    val rocketLaunch = repository.fetchRocketLaunchList()
+    //list of RocketLaunch domain data
+    val rocketLaunch = repository.fetchRocketLaunchList().asLiveData()
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
 
     init {
-        fetchRocketLaunchFrom ()
+        refreshRocketLaunchDb()
     }
 
     /**
      *  Refresh data in the Repository
      * */
-    private fun fetchRocketLaunchFrom () {
+    private fun refreshRocketLaunchDb() {
         viewModelScope.launch {
             _loadingState.value = LoadingState.LOADING
             try {
@@ -58,4 +58,6 @@ class ListViewModel @Inject constructor(private val repository: RocketLaunchRepo
         DONE,
         ERROR
     }
+
+
 }

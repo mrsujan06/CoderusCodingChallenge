@@ -34,5 +34,4 @@ class RocketLaunchListAdapter internal constructor(
         }
     }
 
-
 }
