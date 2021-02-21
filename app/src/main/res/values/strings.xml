@@ -11,5 +11,6 @@
     <string name="tap_for_details">Tap a mission for more details.</string>
     <string name="network_error_message">Please Connect to Network</string>
     <string name="detail_not_available">Details not available</string>
+    <string name="switch_theme">Switch Theme</string>
 
 </resources>
