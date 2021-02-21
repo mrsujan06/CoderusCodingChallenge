@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.coderus.codingchallenge.database.RocketEntities.Companion.ROCKET_TABLE
 import com.coderus.codingchallenge.domain.RocketLaunch
+import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 
 @Entity(tableName = ROCKET_TABLE)
 data class RocketEntities constructor(
@@ -36,7 +37,9 @@ data class RocketEntities constructor(
         const val UPCOMING = "upcoming"
     }
 }
-
+/**
+ * Extension function to map [RocketEntities] to [RocketLaunch] model
+ */
 fun List<RocketEntities>.asDomainModel(): List<RocketLaunch> {
     return map {
         RocketLaunch(

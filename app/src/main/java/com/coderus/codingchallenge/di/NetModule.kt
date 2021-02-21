@@ -19,7 +19,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 open class NetModule {
 
-    @Singleton
     @Provides
     open fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
         Retrofit.Builder()
@@ -28,14 +27,12 @@ open class NetModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
-    @Singleton
     @Provides
     open fun provideMoshi(): Moshi =
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
 
-    @Singleton
     @Provides
     open fun provideOkhttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
@@ -44,7 +41,6 @@ open class NetModule {
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
-    @Singleton
     @Provides
     open fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
@@ -52,7 +48,6 @@ open class NetModule {
         }
 
     @Provides
-    @Singleton
     open fun provideAPIService(retrofit: Retrofit): APIService =
         retrofit.create(APIService::class.java)
 

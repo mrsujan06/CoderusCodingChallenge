@@ -48,7 +48,6 @@ dependencies {
     def timber_version = "4.7.1"
     def retrofitVersion = "2.9.0"
     def moshi_version = "1.11.0"
-    def hiltVersion = "2.32-alpha"
     def okhttp_version = "4.9.0"
     def room_version = "2.2.6"
 

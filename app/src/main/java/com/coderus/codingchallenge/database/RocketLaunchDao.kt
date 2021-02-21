@@ -7,7 +7,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RocketDao {
+interface RocketLaunchDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRocketList(rocketList: List<RocketEntities>)

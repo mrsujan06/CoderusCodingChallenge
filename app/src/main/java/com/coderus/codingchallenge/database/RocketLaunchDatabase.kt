@@ -4,6 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(entities = [RocketEntities::class], version = 1, exportSchema = false)
-abstract class RocketDatabase : RoomDatabase() {
-    abstract val rocketDao: RocketDao
+abstract class RocketLaunchDatabase : RoomDatabase() {
+    abstract val rocketLaunchDao: RocketLaunchDao
 }

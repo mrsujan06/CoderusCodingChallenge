@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * Model object to store data about a rocket launch.
+ * Model object to store data about a rocket launch Json.
  */
 @JsonClass(generateAdapter = true)
 data class RocketLaunchJson(
@@ -23,6 +23,9 @@ data class RocketLaunchJson(
     val upcoming: Boolean?
 )
 
+/**
+ * Extension function to map [RocketLaunchJson] to [RocketEntities]
+ */
 fun List<RocketLaunchJson>.asDatabaseModel(): List<RocketEntities> {
     return map {
         RocketEntities(

@@ -2,29 +2,26 @@ package com.coderus.codingchallenge.di
 
 import android.content.Context
 import androidx.room.Room
-import com.coderus.codingchallenge.database.RocketDao
-import com.coderus.codingchallenge.database.RocketDatabase
+import com.coderus.codingchallenge.database.RocketLaunchDao
+import com.coderus.codingchallenge.database.RocketLaunchDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 open class DatabaseModule {
 
     @Provides
-    @Singleton
-    open fun provideRocketDatabase(context: Context): RocketDatabase =
+    open fun provideRocketDatabase(context: Context): RocketLaunchDatabase =
         Room.databaseBuilder(
             context.applicationContext,
-            RocketDatabase::class.java,
+            RocketLaunchDatabase::class.java,
             "Rockets"
         ).fallbackToDestructiveMigration().build()
 
     @Provides
-    @Singleton
-    open fun provideRocketDao(rocketDatabase: RocketDatabase): RocketDao =
-        rocketDatabase.rocketDao
+    open fun provideRocketDao(rocketLaunchDatabase: RocketLaunchDatabase): RocketLaunchDao =
+        rocketLaunchDatabase.rocketLaunchDao
 }

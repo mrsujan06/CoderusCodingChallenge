@@ -1,6 +1,6 @@
 package com.coderus.codingchallenge.repository
 
-import com.coderus.codingchallenge.database.RocketDatabase
+import com.coderus.codingchallenge.database.RocketLaunchDatabase
 import com.coderus.codingchallenge.database.RocketEntities
 import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.network.domain.RocketLaunchJson
@@ -11,18 +11,18 @@ import kotlinx.coroutines.withContext
 
 /**
  * Repository implementation for fetching Rocket Launches
- * from Network and Storing them to the database
+ * from Network and Storing them to the launchDatabase
  * */
 class RocketLaunchRepositoryImp(
     private val apiService: APIService,
-    private val database: RocketDatabase
+    private val launchDatabase: RocketLaunchDatabase
 ) : RocketLaunchRepository {
 
     /**
-     * Gets the data from database
+     * Gets the data from launchDatabase
      * */
     override fun fetchRocketLaunchList(): Flow<List<RocketEntities>> {
-        return database.rocketDao.getRocketLauncher()
+        return launchDatabase.rocketLaunchDao.getRocketLauncher()
     }
 
     /**
@@ -32,13 +32,12 @@ class RocketLaunchRepositoryImp(
         apiService.getRocketLaunchList()
 
     /**
-     * Insert Network result to the Room database
+     * Insert Network result to the Room launchDatabase
      * **/
     override suspend fun refreshRocketLaunchDb() {
         withContext(Dispatchers.IO) {
             val rocketLaunchNetwork = fetchRocketLaunchesFromNetwork()
-            database.rocketDao.insertRocketList(rocketLaunchNetwork.asDatabaseModel())
+            launchDatabase.rocketLaunchDao.insertRocketList(rocketLaunchNetwork.asDatabaseModel())
         }
     }
-
 }
