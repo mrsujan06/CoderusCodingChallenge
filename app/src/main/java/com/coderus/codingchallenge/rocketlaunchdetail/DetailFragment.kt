@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.coderus.codingchallenge.R
 import com.coderus.codingchallenge.databinding.FragmentDetailBinding
@@ -37,8 +38,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         binding.missionName.text = rocketLauncher?.name
         binding.flightNumberValue.text = rocketLauncher?.flightNumber.toString()
-        binding.detailsValue.text =
-            rocketLauncher?.details ?: context?.getString(R.string.detail_not_available)
+        binding.detailsValue.text = rocketLauncher?.details ?: context?.getString(R.string.detail_not_available)
         binding.launchDateUTCValue.text = rocketLauncher?.dateUTC
 
         when {

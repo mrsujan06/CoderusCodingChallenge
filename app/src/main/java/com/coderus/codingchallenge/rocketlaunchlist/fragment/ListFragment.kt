@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.coderus.codingchallenge.R
-import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ViewModelFactory
 import com.coderus.codingchallenge.database.asDomainModel
 import com.coderus.codingchallenge.databinding.FragmentListBinding
 import com.coderus.codingchallenge.domain.RocketLaunch
@@ -18,8 +17,11 @@ import com.coderus.codingchallenge.rocketlaunchlist.ListItemDecoration
 import com.coderus.codingchallenge.rocketlaunchlist.RocketLaunchListAdapter
 import com.coderus.codingchallenge.rocketlaunchlist.listener.ItemClickListener
 import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ListViewModel
+import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ViewModelFactory
+import com.coderus.codingchallenge.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 /**
  * Fragment to display the list of RocketLaunchJson Launches.
@@ -65,20 +67,27 @@ class ListFragment : Fragment(R.layout.fragment_list), ItemClickListener {
             this, ViewModelFactory(repository)
         ).get(ListViewModel::class.java)
 
-        viewModel.rocketLaunch.observe(viewLifecycleOwner) {
-            adapter.submitList(it.asDomainModel())
-        }
+        viewModel.rocketLaunch.observe(viewLifecycleOwner) { responseStatus ->
 
-        viewModel.loadingState.observe(viewLifecycleOwner) { loadingState ->
+            when (responseStatus) {
+                is Resource.Loading -> {
+                    displayProgressbar()
+                }
 
-            if (loadingState != null) {
-                when (loadingState) {
-                    ListViewModel.LoadingState.LOADING -> displayProgressbar()
-                    ListViewModel.LoadingState.DONE -> displayRocketLunchesList()
-                    ListViewModel.LoadingState.ERROR -> displayConnectionError()
+                is Resource.Success -> {
+                    adapter.submitList(responseStatus.value.asDomainModel())
+                    displayRocketLunchesList()
+
+                }
+
+                is Resource.Failure -> {
+                    displayConnectionError()
+
                 }
             }
+
         }
+
     }
 
     private fun displayProgressbar() {

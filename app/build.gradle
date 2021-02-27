@@ -100,4 +100,5 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
 
+    testImplementation 'org.amshove.kluent:kluent:1.51'
 }

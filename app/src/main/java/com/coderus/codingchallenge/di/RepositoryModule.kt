@@ -1,9 +1,8 @@
 package com.coderus.codingchallenge.di
 
-import com.coderus.codingchallenge.network.api.APIService
 import com.coderus.codingchallenge.database.RocketLaunchDatabase
+import com.coderus.codingchallenge.network.RocketApiDataSource
 import com.coderus.codingchallenge.repository.RocketLaunchRepository
-import com.coderus.codingchallenge.repository.RocketLaunchRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +14,8 @@ open class RepositoryModule {
 
     @Provides
     open fun provideRocketLaunchesRepository(
-        apiService: APIService,
+        apiService: RocketApiDataSource,
         launchDatabase: RocketLaunchDatabase
-    ): RocketLaunchRepository = RocketLaunchRepositoryImp(apiService, launchDatabase)
+    ): RocketLaunchRepository =
+        RocketLaunchRepository(apiService, launchDatabase)
 }
