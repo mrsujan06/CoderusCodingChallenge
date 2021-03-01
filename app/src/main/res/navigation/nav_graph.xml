@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.coderus.codingchallenge.rocketlaunchlist.fragment.ListFragment"
+        android:name="com.coderus.codingchallenge.rocketlaunchlist.ListFragment"
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_detailFragment"

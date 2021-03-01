@@ -2,8 +2,7 @@ package com.coderus.codingchallenge.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.coderus.codingchallenge.database.RocketEntities
-import com.coderus.codingchallenge.repository.RocketLaunchRepository
-import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ListViewModel
+import com.coderus.codingchallenge.rocketlaunchlist.ListViewModel
 import com.coderus.codingchallenge.utils.TestCoroutineRule
 import com.nhaarman.mockitokotlin2.given
 import junit.framework.Assert.assertEquals

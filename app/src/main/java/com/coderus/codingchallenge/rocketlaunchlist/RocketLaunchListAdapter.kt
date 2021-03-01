@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.coderus.codingchallenge.domain.RocketLaunch
-import com.coderus.codingchallenge.rocketlaunchlist.listener.ItemClickListener
 import com.coderus.codingchallenge.network.domain.RocketLaunchJson
 
 /**
