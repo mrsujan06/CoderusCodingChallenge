@@ -38,7 +38,6 @@ class ListViewModel @Inject constructor(
             } catch (networkError: IOException) {
                 Timber.e(networkError.localizedMessage)
                 _loadingState.value = LoadingState.ERROR
-                _loadingState.value = LoadingState.DONE
             }
         }
     }

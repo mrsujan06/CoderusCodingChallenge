@@ -97,6 +97,9 @@ class ListFragment : Fragment(R.layout.fragment_list), ItemClickListener {
 
     private fun displayConnectionError() {
         binding.progressBar.visibility = View.GONE
+        binding.titleText.visibility = View.VISIBLE
+        binding.subheading.visibility = View.VISIBLE
+        binding.rocketLaunchList.visibility = View.VISIBLE
         Toast.makeText(context, R.string.network_error_message, Toast.LENGTH_SHORT).show()
     }
 
