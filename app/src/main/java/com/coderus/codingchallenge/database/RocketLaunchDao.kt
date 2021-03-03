@@ -13,6 +13,6 @@ interface RocketLaunchDao {
     fun insertRocketList(rocketList: List<RocketEntities>)
 
     @Query("SELECT * FROM ${RocketEntities.ROCKET_TABLE}")
-    fun getRocketLauncher(): LiveData<List<RocketEntities>>
+    suspend fun getRocketLauncher(): List<RocketEntities>
 
 }

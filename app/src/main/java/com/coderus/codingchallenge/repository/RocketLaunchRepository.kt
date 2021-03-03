@@ -26,17 +26,17 @@ class RocketLaunchRepository(
     }
 
     fun loadRocketLaunches(): LiveData<Resource<List<RocketEntities>>> {
-        return object :
-            NetworkBoundResource<List<RocketEntities>, List<RocketLaunchJson>>(appExecutors) {
-            override fun saveCallResult(item: List<RocketLaunchJson>) {
-                db.rocketLaunchDao.insertRocketList(item.asDatabaseModel())
+        return object : NetworkBoundResource<List<RocketEntities>, List<RocketLaunchJson>>() {
+
+            override suspend fun saveCallResults(items: List<RocketLaunchJson>) {
+                db.rocketLaunchDao.insertRocketList(items.asDatabaseModel())
             }
 
             override fun shouldFetch(data: List<RocketEntities>?): Boolean {
                 return true
             }
 
-            override fun loadFromDb(): LiveData<List<RocketEntities>> {
+            override suspend fun loadFromDb(): List<RocketEntities> {
                 return db.rocketLaunchDao.getRocketLauncher()
             }
 
@@ -44,7 +44,28 @@ class RocketLaunchRepository(
                 return getRocketLaunchesFromNet()
             }
 
+
         }.asLiveData()
+
+//        return object :
+//            NetworkBoundResource<List<RocketEntities>, List<RocketLaunchJson>>(appExecutors) {
+//            override fun saveCallResult(item: List<RocketLaunchJson>) {
+//                db.rocketLaunchDao.insertRocketList(item.asDatabaseModel())
+//            }
+//
+//            override fun shouldFetch(data: List<RocketEntities>?): Boolean {
+//                return true
+//            }
+//
+//            override fun loadFromDb(): LiveData<List<RocketEntities>> {
+//                return db.rocketLaunchDao.getRocketLauncher()
+//            }
+//
+//            override fun createCall(): LiveData<ApiResponse<List<RocketLaunchJson>>> {
+//                return getRocketLaunchesFromNet()
+//            }
+//
+//        }.asLiveData()
     }
 
 }
