@@ -21,7 +21,7 @@ class RocketLaunchRepositoryImp(
     /**
      * Gets the data from launchDatabase
      * */
-    override fun fetchRocketLaunchList(): Flow<List<RocketEntities>> {
+    override suspend fun fetchRocketLaunchList(): List<RocketEntities> {
         return launchDatabase.rocketLaunchDao.getRocketLauncher()
     }
 

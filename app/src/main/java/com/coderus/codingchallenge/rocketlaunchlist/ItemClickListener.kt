@@ -1,4 +1,4 @@
-package com.coderus.codingchallenge.rocketlaunchlist.listener
+package com.coderus.codingchallenge.rocketlaunchlist
 
 import com.coderus.codingchallenge.domain.RocketLaunch
 

@@ -1,4 +1,4 @@
-package com.coderus.codingchallenge.rocketlaunchlist.fragment
+package com.coderus.codingchallenge.rocketlaunchlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.coderus.codingchallenge.R
-import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ViewModelFactory
+import com.coderus.codingchallenge.database.RocketEntities
 import com.coderus.codingchallenge.database.asDomainModel
 import com.coderus.codingchallenge.databinding.FragmentListBinding
 import com.coderus.codingchallenge.domain.RocketLaunch
 import com.coderus.codingchallenge.repository.RocketLaunchRepository
-import com.coderus.codingchallenge.rocketlaunchlist.ListItemDecoration
-import com.coderus.codingchallenge.rocketlaunchlist.RocketLaunchListAdapter
-import com.coderus.codingchallenge.rocketlaunchlist.listener.ItemClickListener
-import com.coderus.codingchallenge.rocketlaunchlist.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -65,18 +61,17 @@ class ListFragment : Fragment(R.layout.fragment_list), ItemClickListener {
             this, ViewModelFactory(repository)
         ).get(ListViewModel::class.java)
 
-        viewModel.rocketLaunch.observe(viewLifecycleOwner) {
-            adapter.submitList(it.asDomainModel())
-        }
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
-        viewModel.loadingState.observe(viewLifecycleOwner) { loadingState ->
-
-            if (loadingState != null) {
-                when (loadingState) {
-                    ListViewModel.LoadingState.LOADING -> displayProgressbar()
-                    ListViewModel.LoadingState.DONE -> displayRocketLunchesList()
-                    ListViewModel.LoadingState.ERROR -> displayConnectionError()
+            when (state) {
+                is ListViewModel.State.Loading -> displayProgressbar()
+                is ListViewModel.State.Success -> {
+                    displayRocketLunchesList(state.rocketLaunchList)
                 }
+                is ListViewModel.State.Error -> displayConnectionError(
+                    state.error,
+                    state.rocketLaunchList
+                )
             }
         }
     }
@@ -88,19 +83,21 @@ class ListFragment : Fragment(R.layout.fragment_list), ItemClickListener {
         binding.rocketLaunchList.visibility = View.GONE
     }
 
-    private fun displayRocketLunchesList() {
+    private fun displayRocketLunchesList(rocketLaunchList: List<RocketEntities>) {
+        adapter.submitList(rocketLaunchList.asDomainModel())
         binding.titleText.visibility = View.VISIBLE
         binding.subheading.visibility = View.VISIBLE
         binding.rocketLaunchList.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun displayConnectionError() {
+    private fun displayConnectionError(error: Exception, rocketLaunchList: List<RocketEntities>) {
+        adapter.submitList(rocketLaunchList.asDomainModel())
         binding.progressBar.visibility = View.GONE
         binding.titleText.visibility = View.VISIBLE
         binding.subheading.visibility = View.VISIBLE
         binding.rocketLaunchList.visibility = View.VISIBLE
-        Toast.makeText(context, R.string.network_error_message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, error.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

@@ -1,4 +1,4 @@
-package com.coderus.codingchallenge.rocketlaunchlist.viewmodel
+package com.coderus.codingchallenge.rocketlaunchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

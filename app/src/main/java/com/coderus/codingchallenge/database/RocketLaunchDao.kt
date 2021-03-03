@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RocketLaunchDao {
@@ -13,6 +12,6 @@ interface RocketLaunchDao {
     suspend fun insertRocketList(rocketList: List<RocketEntities>)
 
     @Query("SELECT * FROM ${RocketEntities.ROCKET_TABLE}")
-    fun getRocketLauncher(): Flow<List<RocketEntities>>
+    suspend fun getRocketLauncher(): List<RocketEntities>
 
 }
